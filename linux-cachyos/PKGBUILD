@@ -8,6 +8,9 @@
 ### BUILD OPTIONS
 # Set these variables to ANYTHING that is not null or choose proper variable to enable them
 
+: "${_cachy_github_user:="brettor-lab"}"
+: "${_cachy_github_base:="https://github.com/$_cachy_github_user/linux-cachyos"}"
+
 ### Selecting CachyOS config
 : "${_cachy_config:=yes}"
 
@@ -164,6 +167,8 @@ else
 fi
 
 pkgbase="linux-$_pkgsuffix"
+
+pkgbase="$pkgbase-brettor-lts-sec"
 _major=6.18
 _minor=0
 #_minorc=$((_minor+1))
@@ -179,7 +184,8 @@ pkgrel=1
 _kernver="$pkgver-$pkgrel"
 _kernuname="${pkgver}-${_pkgsuffix}"
 arch=('x86_64')
-url="https://github.com/CachyOS/linux-cachyos"
+#url="https://github.com/CachyOS/linux-cachyos"
+url="$_cachy_github_base"
 license=('GPL-2.0-only')
 options=('!strip' '!debug' '!lto')
 makedepends=(
@@ -276,6 +282,14 @@ export KBUILD_BUILD_USER="$pkgbase"
 export KBUILD_BUILD_TIMESTAMP="$(date -Ru${SOURCE_DATE_EPOCH:+d @$SOURCE_DATE_EPOCH})"
 
 _die() { error "$@" ; exit 1; }
+source=(
+"https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.tar.xz"
+"config"
+"git+https://github.com/cachyos/zfs.git#commit=7de9800e5ce45d03c797be57a3e959fc914b2adb"
+"https://us.download.nvidia.com/XFree86/Linux-x86_64/580.105.08/NVIDIA-Linux-x86_64-580.105.08.run"
+"https://raw.githubusercontent.com/cachyos/kernel-patches/master/6.18/all/0001-cachyos-base-all.patch"
+"https://raw.githubusercontent.com/cachyos/kernel-patches/master/6.18/misc/dkms-clang.patch"
+"https://raw.githubusercontent.com/cachyos/kernel-patches/master/6.18/misc/nvidia/0001-Enable-atomic-kernel-modesetting-by-default.patch")
 
 prepare() {
     cd "$_srcname"
