@@ -26,7 +26,7 @@
 : "${_cpusched:=cachyos}"
 
 ### Tweak kernel options prior to a build via nconfig
-: "${_makenconfig:=no}"
+: "${_makenconfig:=yes}"
 
 ### Tweak kernel options prior to a build via xconfig
 : "${_makexconfig:=no}"
@@ -49,7 +49,7 @@
 # the ARCH defaults. Useful when the package gets updated and you already went
 # through the trouble of customizing your config options.  NOT recommended when
 # a new kernel is released, but again, convenient for package bumps.
-: "${_use_current:=no}"
+: "${_use_current:=yes}"
 
 ### Enable KBUILD_CFLAGS -O3
 : "${_cc_harder:=yes}"
@@ -58,7 +58,7 @@
 : "${_per_gov:=no}"
 
 ### Enable TCP_CONG_BBR3
-: "${_tcp_bbr3:=no}"
+: "${_tcp_bbr3:=yes}"
 
 ### Running with a 1000HZ, 750Hz, 600 Hz, 500Hz, 300Hz, 250Hz and 100Hz tick rate
 : "${_HZ_ticks:=1000}"
@@ -82,7 +82,7 @@
 # - "native" (use compiler autodetection)
 # - "zen4" (Use znver4 compiler optimizations)
 # - "generic" (kernel's default - to share the package between machines with different CPU µarch as long as they are x86-64)
-: "${_processor_opt:=}"
+: "${_processor_opt:=native}"
 
 # Clang LTO mode, only available with the "llvm" compiler - options are "none", "full" or "thin".
 # ATTENTION - one of three predefined values should be selected!
@@ -90,7 +90,7 @@
 # "thin: uses multiple threads, faster and uses less memory, may have a lower runtime performance than Full."
 # "thin-dist: Similar to thin, but uses a distributed model rather than in-process: https://discourse.llvm.org/t/rfc-distributed-thinlto-build-for-kernel/85934"
 # "none: disable LTO
-: "${_use_llvm_lto:=thin}"
+: "${_use_llvm_lto:=full}"
 
 # Use suffix -lto only when requested by the user
 # yes - enable -lto suffix
@@ -107,7 +107,7 @@
 # scheme used by CONFIG_CFI_CLANG. kCFI doesn't require LTO, doesn't
 # alter function references to point to a jump table, and won't break
 # function address equality.
-: "${_use_kcfi:=no}"
+: "${_use_kcfi:=yes}"
 
 # Build the zfs module in to the kernel
 # WARNING: The ZFS module doesn't build with selected RT sched due to licensing issues.
@@ -116,7 +116,7 @@
 
 # Builds the nvidia module and package it into a own base
 # This does replace the requirement of nvidia-dkms
-: "${_build_nvidia:=no}"
+: "${_build_nvidia:=yes}"
 
 # Builds the open nvidia module and package it into a own base
 # This does replace the requirement of nvidia-open-dkms
@@ -134,7 +134,7 @@
 # 3. Profile the kernel and convert the profile, see Generating the Profile for AutoFDO
 # 4. Put the profile into the sourcedir
 # 5. Run kernel build again with the _autofdo_profile_name path to profile specified
-: "${_autofdo:=no}"
+: "${_autofdo:=yes}"
 
 # Name for the AutoFDO profile
 : "${_autofdo_profile_name:=}"
@@ -147,10 +147,10 @@
 # create_llvm_prof --binary=/usr/src/debug/linux-cachyos-rc/vmlinux --profile=propeller.data --format=propeller --propeller_output_module_name --out=propeller_cc_profile.txt --propeller_symorder=propeller_ld_profile.txt
 # 4. Place the propeller_cc_profile.txt and propeller_ld_profile.txt into the srcdir
 # 5. Enable _propeller_prefix
-: "${_propeller:=no}"
+: "${_propeller:=yes}"
 
 # Enable this after the profiles have been generated
-: "${_propeller_profiles:=no}"
+: "${_propeller_profiles:=}"
 
 # ATTENTION: Do not modify after this line
 _is_lto_kernel() {
@@ -173,7 +173,7 @@ fi
 
 pkgbase="linux-$_pkgsuffix"
 
-pkgbase="$pkgbase-brettor-lts-sec"
+pkgbase="$pkgbase-brettor-lts"
 _major=6.18
 _minor=0
 #_minorc=$((_minor+1))
@@ -184,7 +184,7 @@ _stable=${_major}
 #_stablerc=${_major}-${_rcver}
 _srcname=linux-${_stable}
 #_srcname=linux-${_major}
-pkgdesc='Linux EEVDF + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements.'
+pkgdesc='Linux Bore + LTO + AutoFDO + Propeller Cachy Sauce Kernel by CachyOS with other patches and improvements.'
 pkgrel=1
 _kernver="$pkgver-$pkgrel"
 _kernuname="${pkgver}-${_pkgsuffix}"
