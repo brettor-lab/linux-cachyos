@@ -173,7 +173,6 @@ fi
 
 pkgbase="linux-$_pkgsuffix"
 
-pkgbase="$pkgbase-brettor-lts"
 _major=6.18
 _minor=0
 #_minorc=$((_minor+1))
